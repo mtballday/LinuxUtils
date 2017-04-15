@@ -1,0 +1,10 @@
+#!/bin/bash 
+# Param 1 is number of hours, Param 2 is Album, Param 3 is Artist Param 4 is year
+# Example: bookrecorder 4 combat grossman 2014
+
+COUNTER=0
+while [  $COUNTER -lt $1 ]; do
+  arecord -v -f cd -d 3600 -t raw | lame -r -m s -a -V 9 - `printf %s%03d.mp3 ${2} ${COUNTER}`
+  id3v2 -A $2 -a $3 -y $4 -g 101 -T $COUNTER -t `printf %s%03d ${2} ${COUNTER}` `printf %s%03d.mp3 ${2} ${COUNTER}`
+  let COUNTER=COUNTER+1 
+done
